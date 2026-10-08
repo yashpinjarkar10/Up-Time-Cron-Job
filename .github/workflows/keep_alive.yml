@@ -1,0 +1,22 @@
+name: Keep Both Supabase Projects Awake
+
+on:
+  schedule:
+    - cron: '0 0 */3 * *' # Automatically runs every 3 days at 12:00 AM UTC
+  workflow_dispatch:     # Lets you trigger it manually anytime for testing
+
+jobs:
+  ping_projects:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase Project 1
+        run: |
+          curl -i -X GET "${{ secrets.SUPABASE_URL_PERSONA }}/rest/v1/" \
+          -H "apikey: ${{ secrets.SUPABASE_ANON_KEY_PERSONA }}" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY_PERSONA }}"
+
+      - name: Ping Supabase Project 2
+        run: |
+          curl -i -X GET "${{ secrets.SUPABASE_URL_2D }}/rest/v1/" \
+          -H "apikey: ${{ secrets.SUPABASE_ANON_KEY_2D }}" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY_2D }}"
